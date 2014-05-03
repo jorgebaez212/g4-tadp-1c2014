@@ -2,35 +2,31 @@ require 'rspec'
 
 class Trait
   class << self
-    attr_accessor :trait_list
+    attr_accessor :trait_list_instance, :trait_list_class
   end
 
-  Trait.trait_list = Array.new
+  Trait.trait_list_instance = Hash.new
+  Trait.trait_list_class = Hash.new
 
-  def self.define(name, methodName, &method)
-    trait_list.push(InnerTrait.new(name, methodName, &method))
-  end
-
-  def self.define2(*args)
-    args.each{
-        |a|
-        method = a.method
-        trait_list.push(InnerTrait.new(a.name, method.to_s, &method))
-    }
-
-
-  end
-
-  class InnerTrait
-    attr_accessor :name, :method, :methodName
-
-    def initialize(name, methodName, &method)
-      self.name=name
-      self.method=method
-      self.methodName=methodName
+  def self.define(name, *args)
+    #Si no existe una entrada en el Hash la creo
+    if(trait_list_instance[name].nil?)
+      trait_list_instance[name] = Hash.new
     end
 
+    if(trait_list_class[name].nil?)
+      trait_list_class[name] = Hash.new
+    end
+
+    args.each {|i|
+      if(i.type==:instance)
+        trait_list_instance[name][i.name] = i.block
+      else
+        trait_list_class[name][i.name] = i.block
+      end
+    }
   end
+
 end
 
 
@@ -44,80 +40,69 @@ class Object
     self.send(:define_singleton_method, name, &block)
   end
 
-  def uses (trait)
-    #include trait
-    #Copiar solo los metodos, nada de variables de estado.
+  class Meth
+    attr_accessor :type, :name, :block
+  end
 
-    #puts 'Agregando metodos para Trait: '+trait.to_s
-    #puts 'Tiene metodo de clase printHi '+ (trait.singleton_methods(false).any? { |m| m.to_s=='printHi'}).to_s
-    #puts 'Tiene metodo de instancia printHi2 '+(trait.instance_methods(false).any? { |m| m.to_s=='printHi2'}).to_s
+  def c_meth(name, &block)
+    m = Meth.new
+    m.name = name
+    m.type = :class
+    m.block = Proc.new(&block)
+    return m
+  end
 
-    #self.send(:define_method, 'printHi2', &trait.instance_method(:printHi2)) #wrong argument type UnboundMethod (expected Proc) (TypeError)
-    #trait.instance_method(:printHi2).bind(self) #`bind': bind argument must be an instance of TT (TypeError)
+  def i_meth(name, &block)
+    m = Meth.new
+    m.name = name
+    m.type = :instance
+    m.block = Proc.new(&block)
+    return m
+  end
 
-    #trait.instance_methods(false).each { |m| create_method(m.to_s, &m) }
-    #trait.singleton_methods.each { |m| create_singleton_method(m.to_s, &m) }
-
-    #puts 'Soy '+self.to_s+' se me agregaron los sig metodos'
-    #puts 'De Clase'
-    #puts self.singleton_methods(false)
-    #puts 'De instancia'
-    #puts self.instance_methods(false)
-
-
-    a = Trait.trait_list.detect{ |e| e.name==trait }
-    m = a.method
-    self.send(:define_method, m.to_s, &m)
-
+  def uses (*traits)
+    traits.each{ |trait|
+      a = Trait.trait_list_instance[trait]
+      a.each { |key,value| create_method(key, &value)}
+      a = Trait.trait_list_class[trait]
+      a.each { |key,value| create_singleton_method(key, &value)}
+    }
   end
 end
 
-class Module
-  def+ (obj)
-    m=Module.new do
-      include obj
-      include self
-    end
-    m
-  end
-end
+Trait.define :T,
+              c_meth(:printHi) {puts 'Hola, mi nombre de metodo de clase es printHi'},
+              i_meth(:printHi2) {puts 'Hola, mi nombre de metodo de instancia es printHi2'}
 
-Trait.define2 do
-  name :'T'
-  method :'printHi' do
-    puts 'Hola, mi nombre de funcion es printHi2'
-  end
-end
-
-Trait.define('TT', 'printHi2') {puts 'Hola, mi nombre de funcion es printHi2'}
+Trait.define :T2,
+             c_meth(:printHi3) {puts 'Hola, mi nombre de metodo de clase es printHi3'},
+             i_meth(:printHi4) {puts 'Hola, mi nombre de metodo de instancia es printHi4'}
 
 class Prueba
-  #uses T
-  #uses TT
-  uses 'T'
-  uses 'TT'
-
-  #create_method ('printHi') {puts 'hello there'}
+  uses :T, :T2
 end
 
 
 class Lala
-  #puts Prueba.private_methods
-  #puts Prueba.public_methods
-  #puts Prueba.singleton_methods
   p = Prueba.new
 
-  #puts '__Prueba.public_methods__'
-  #Prueba.public_methods(false).each{|a| puts a}
-  #puts '__Prueba.singleton_method__'
-  #Prueba.singleton_methods(false).each{|a| puts a}
-  #puts '__p.public_methods__'
-  #p.public_methods(false).each{|a| puts a}
+  puts '__p.public_methods__'
+  puts p.public_methods(false)
+  puts ''
+
+  puts '__Prueba.singleton_methods__'
+  puts Prueba.singleton_methods(false)
+  puts ''
+
   #puts '__p.singleton_method__'
   #p.singleton_methods(false).each{|a| puts a}
   #Prueba.singleton_methods(false).each{|a| puts a}
   #p.printHi
-  p.printHi
-  #Prueba.printHi2
+
+  puts '__Llamada a metodos__'
+  Prueba.printHi #Metodo de clase
+  p.printHi2 #Metodo de instancia
+  Prueba.printHi3 #Metodo de clase
+  p.printHi4 #Metodo de instancia
 end
 
