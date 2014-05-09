@@ -70,39 +70,26 @@ class Object
   end
 end
 
-Trait.define :T,
-              c_meth(:printHi) {puts 'Hola, mi nombre de metodo de clase es printHi'},
-              i_meth(:printHi2) {puts 'Hola, mi nombre de metodo de instancia es printHi2'}
+describe 'Test crea metodos' do
+  before :all do
+    Trait.define :T,
+                 c_meth(:printHi) {puts 'Hola, mi nombre de metodo de clase es printHi'},
+                 i_meth(:printHi2) {puts 'Hola, mi nombre de metodo de instancia es printHi2'}
 
-Trait.define :T2,
-             c_meth(:printHi3) {puts 'Hola, mi nombre de metodo de clase es printHi3'},
-             i_meth(:printHi4) {puts 'Hola, mi nombre de metodo de instancia es printHi4'}
+    Trait.define :T2,
+                 c_meth(:printHi3) {puts 'Hola, mi nombre de metodo de clase es printHi3'},
+                 i_meth(:printHi4) {puts 'Hola, mi nombre de metodo de instancia es printHi4'}
+  end
+  it 'agrega metodo simple' do
+    class Prueba
+      uses :T, :T2
+    end
 
-class Prueba
-  uses :T, :T2
+    p = Prueba.new
+
+    Prueba.should respond_to(:printHi)
+    Prueba.should_not respond_to(:printHi2)
+    p.should respond_to(:printHi2)
+    p.should_not respond_to(:printHi)
+  end
 end
-
-
-class Lala
-  p = Prueba.new
-
-  puts '__p.public_methods__'
-  puts p.public_methods(false)
-  puts ''
-
-  puts '__Prueba.singleton_methods__'
-  puts Prueba.singleton_methods(false)
-  puts ''
-
-  #puts '__p.singleton_method__'
-  #p.singleton_methods(false).each{|a| puts a}
-  #Prueba.singleton_methods(false).each{|a| puts a}
-  #p.printHi
-
-  puts '__Llamada a metodos__'
-  Prueba.printHi #Metodo de clase
-  p.printHi2 #Metodo de instancia
-  Prueba.printHi3 #Metodo de clase
-  p.printHi4 #Metodo de instancia
-end
-
