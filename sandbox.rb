@@ -4,13 +4,20 @@ require_relative './TFramework/SymbolSetUp.rb'
 
 describe 'Test crea metodos' do
   before :all do
-    Trait.define :T,
-                 c_meth(:printHi) {puts 'Hola, mi nombre de metodo de clase es printHi'},
-                 i_meth(:printHi2) {puts 'Hola, mi nombre de metodo de instancia es printHi2'}
 
-    Trait.define :T2,
-                 c_meth(:printHi3) {puts 'Hola, mi nombre de metodo de clase es printHi3'},
-                 i_meth(:printHi4) {puts 'Hola, mi nombre de metodo de instancia es printHi4'}
+    Trait.define(:T) {
+      c_meth(:printHi) {puts 'Hola, mi nombre de metodo de clase es printHi'}
+      i_meth(:printHi2) {puts 'Hola, mi nombre de metodo de instancia es printHi2'}
+    }
+
+
+    Trait.define(:T2) do
+      c_meth(:printHi3) {puts 'Hola, mi nombre de metodo de clase es printHi3'}
+      i_meth(:printHi4) {puts 'Hola, mi nombre de metodo de instancia es printHi4'}
+    end
+
+
+
   end
 
   it 'agrega metodo simple' do

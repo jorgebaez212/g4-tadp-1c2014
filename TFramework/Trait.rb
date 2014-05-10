@@ -1,28 +1,32 @@
 class Trait
   class << self
-    attr_accessor :trait_list_instance, :trait_list_class
+    attr_accessor :trait_list_instance, :trait_list_class, :tmpTrait
   end
 
   Trait.trait_list_instance = Hash.new
   Trait.trait_list_class = Hash.new
 
-  def self.define(name, *args)
+  def self.c_meth(methodName, &block)
+    trait_list_class[tmpTrait][methodName] = Proc.new(&block)
+  end
+
+  def self.i_meth(methodName, &block)
+    trait_list_instance[tmpTrait][methodName] = Proc.new(&block)
+  end
+
+
+  def self.define(traitName, &block)
     #Si no existe una entrada en el Hash la creo
-    if(trait_list_instance[name].nil?)
-      trait_list_instance[name] = Hash.new
+    if(trait_list_instance[traitName].nil?)
+      trait_list_instance[traitName] = Hash.new
     end
 
-    if(trait_list_class[name].nil?)
-      trait_list_class[name] = Hash.new
+    if(trait_list_class[traitName].nil?)
+      trait_list_class[traitName] = Hash.new
     end
 
-    args.each {|i|
-      if(i.type==:instance)
-        trait_list_instance[name][i.name] = i.block
-      else
-        trait_list_class[name][i.name] = i.block
-      end
-    }
+    self.tmpTrait = traitName
+    self.instance_eval &block
   end
 
   def self.c_removeMethod(traitName, methodName)

@@ -9,26 +9,6 @@ class Object
     self.send(:define_singleton_method, name, &block)
   end
 
-  class Meth
-    attr_accessor :type, :name, :block
-  end
-
-  def c_meth(name, &block)
-    m = Meth.new
-    m.name = name
-    m.type = :class
-    m.block = Proc.new(&block)
-    return m
-  end
-
-  def i_meth(name, &block)
-    m = Meth.new
-    m.name = name
-    m.type = :instance
-    m.block = Proc.new(&block)
-    return m
-  end
-
   def uses (*traits)
     traits.each{ |trait|
       a = Trait.trait_list_instance[trait]

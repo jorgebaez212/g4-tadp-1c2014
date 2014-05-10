@@ -13,7 +13,7 @@
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/Test2@sandbox.coverage" NAME="sandbox Coverage Results" MODIFIED="1398035163271" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="Test2" />
-    <SUITE FILE_PATH="coverage/Test2@sandbox_test.coverage" NAME="sandbox_test Coverage Results" MODIFIED="1399740367010" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="Test2" />
+    <SUITE FILE_PATH="coverage/Test2@sandbox_test.coverage" NAME="sandbox_test Coverage Results" MODIFIED="1399743237212" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="Test2" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -30,7 +30,7 @@
       <file leaf-file-name="sandbox.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sandbox.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="71" selection-start="1301" selection-end="1301" vertical-scroll-proportion="0.0" vertical-offset="369" max-vertical-offset="882">
+            <state line="8" column="9" selection-start="193" selection-end="193" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1008">
               <folding />
             </state>
           </provider>
@@ -39,7 +39,7 @@
       <file leaf-file-name="SymbolSetUp.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TFramework/SymbolSetUp.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="44" column="61" selection-start="1155" selection-end="1155" vertical-scroll-proportion="0.0" vertical-offset="567" max-vertical-offset="1098">
+            <state line="36" column="3" selection-start="950" selection-end="950" vertical-scroll-proportion="0.0" vertical-offset="630" max-vertical-offset="1098">
               <folding />
             </state>
           </provider>
@@ -48,7 +48,7 @@
       <file leaf-file-name="ObjectSetUp.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TFramework/ObjectSetUp.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="0" selection-start="561" selection-end="561" vertical-scroll-proportion="0.0" vertical-offset="135" max-vertical-offset="828">
+            <state line="5" column="5" selection-start="127" selection-end="127" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="468">
               <folding />
             </state>
           </provider>
@@ -57,7 +57,7 @@
       <file leaf-file-name="Trait.rb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/TFramework/Trait.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="38" selection-start="0" selection-end="984" vertical-scroll-proportion="0.20408164" vertical-offset="0" max-vertical-offset="864">
+            <state line="13" column="45" selection-start="370" selection-end="370" vertical-scroll-proportion="0.53061223" vertical-offset="0" max-vertical-offset="936">
               <folding />
             </state>
           </provider>
@@ -79,8 +79,10 @@
         <option value="$PROJECT_DIR$/Trait.rb" />
         <option value="$PROJECT_DIR$/ObjectSetUp.rb" />
         <option value="$PROJECT_DIR$/SymbolSetUp.rb" />
+        <option value="$PROJECT_DIR$/TFramework/ObjectSetUp.rb" />
         <option value="$PROJECT_DIR$/TFramework/SymbolSetUp.rb" />
         <option value="$PROJECT_DIR$/sandbox.rb" />
+        <option value="$PROJECT_DIR$/TFramework/Trait.rb" />
       </list>
     </option>
   </component>
@@ -268,7 +270,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="29" width="1368" height="745" extended-state="6" />
+    <frame x="-1" y="29" width="1368" height="745" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -276,7 +278,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32930514" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28440368" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28440368" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -352,11 +354,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///usr/lib/ruby/vendor_ruby/rspec/core/configuration.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="745" column="0" selection-start="25160" selection-end="25160" vertical-scroll-proportion="0.0" vertical-offset="13273" max-vertical-offset="16470" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/borra_metodos.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="4" column="41" selection-start="119" selection-end="119" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="918">
@@ -371,30 +368,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TFramework/ObjectSetUp.rb">
+    <entry file="file:///usr/lib/ruby/vendor_ruby/rspec/core/configuration.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="0" selection-start="561" selection-end="561" vertical-scroll-proportion="0.0" vertical-offset="135" max-vertical-offset="828">
+        <state line="745" column="0" selection-start="25160" selection-end="25160" vertical-scroll-proportion="0.33333334" vertical-offset="13263" max-vertical-offset="16470">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/TFramework/SymbolSetUp.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="61" selection-start="1155" selection-end="1155" vertical-scroll-proportion="0.0" vertical-offset="567" max-vertical-offset="1098">
+        <state line="36" column="3" selection-start="950" selection-end="950" vertical-scroll-proportion="0.0" vertical-offset="630" max-vertical-offset="1098">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/sandbox.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="71" selection-start="1301" selection-end="1301" vertical-scroll-proportion="0.0" vertical-offset="369" max-vertical-offset="882">
+        <state line="8" column="9" selection-start="193" selection-end="193" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1008">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TFramework/ObjectSetUp.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="5" selection-start="127" selection-end="127" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="468">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/TFramework/Trait.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="38" selection-start="0" selection-end="984" vertical-scroll-proportion="0.20408164" vertical-offset="0" max-vertical-offset="864">
+        <state line="13" column="45" selection-start="370" selection-end="370" vertical-scroll-proportion="0.53061223" vertical-offset="0" max-vertical-offset="936">
           <folding />
         </state>
       </provider>
