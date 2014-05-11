@@ -2,11 +2,39 @@ require_relative './Trait.rb'
 
 class Symbol
   def +(other)
+
     name = (self.to_s+'_'+other.to_s).to_sym
 
     copyToTrait name, self
     copyToTrait name, other
 
+    name
+
+  end
+
+  def - (list)
+    #El nombre de un trait generado por una expresion de tipo   class Clase
+    #                                                             uses :T1 - [:m1,:m2]
+    #                                                             ...
+    #                                                           end
+    #Sera :T1_sin-m1_sin-m2
+    name=self.to_s
+    fnNombreMetodosQuitados=Proc.new do|simbolo|name=name+'_sin-'+simbolo.to_s end
+    list.each { |metodoAQuitar| fnNombreMetodosQuitados.call(metodoAQuitar) }
+    name=name.to_sym
+
+    #Se copian los metodos del trait original
+    copyToTrait name, self
+
+    #Se sacan los que se quería excluir
+    list.each { |metodoAQuitar|
+      if(Trait.trait_list_instance[name].has_key? metodoAQuitar)
+        Trait.i_removeMethod name, metodoAQuitar
+      else
+        Trait.c_removeMethod name, metodoAQuitar
+      end  }
+
+    #Devuelvo el symbol del trait especial (sin los metodos indicados en la lista)
     name
   end
 

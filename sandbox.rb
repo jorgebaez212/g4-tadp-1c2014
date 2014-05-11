@@ -48,4 +48,38 @@ describe 'Test crea metodos' do
 
     (Trait.trait_list_instance.has_key? :T_i_printHi100).should == true
   end
+
+  it 'usa un trait sacandole algunos metodos' do
+
+    Trait.define(:T) {
+      c_meth(:print_A) {puts 'Hola, mi nombre de metodo de clase es printHi1'}
+      i_meth(:print_B) {puts 'Hola, mi nombre de metodo de instancia es printHi2'}
+      c_meth(:print_C) {puts 'Hola, mi nombre de metodo de clase es printHi3'}
+      i_meth(:print_D) {puts 'Hola, mi nombre de metodo de instancia es printHi4'}
+    }
+
+    class PruebaResta
+      uses :T - [:print_B ,:print_C] +:T2
+    end
+
+    PruebaResta.should respond_to(:print_A)
+    PruebaResta.should_not respond_to(:print_B)
+    PruebaResta.should_not respond_to(:print_C)
+    PruebaResta.should_not respond_to(:print_D)
+    PruebaResta.should respond_to(:printHi3)
+    PruebaResta.should_not respond_to(:printHi4)
+
+    p = PruebaResta.new
+    p.should_not respond_to(:print_A)
+    p.should_not respond_to(:print_B)
+    p.should_not respond_to(:print_C)
+    p.should respond_to(:print_D)
+    p.should_not respond_to(:printHi3)
+    p.should respond_to(:printHi4)
+
+    Trait.trait_list_instance.each{|key,value| puts 'Trait: '+key.to_s; value.each{|key,value| puts key.to_s}}
+
+  end
+
+
 end
