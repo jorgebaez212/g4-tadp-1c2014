@@ -1,13 +1,22 @@
 require_relative './Trait.rb'
 
 class Symbol
+
+
+
   def +(other)
 
     name = (self.to_s+'_'+other.to_s).to_sym
 
     copyToTrait name, self
-    copyToTrait name, other
+    metodos_compartidos = Array.new
 
+    Trait.trait_list_instance[other].each { |key,value|
+        metodos_compartidos.push key if Trait.trait_list_instance[name].has_key? key
+       }
+
+    copyToTrait name, other
+    metodos_compartidos.each { |metodo| Trait.i_removeMethod name, metodo}
     name
 
   end

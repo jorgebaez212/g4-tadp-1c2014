@@ -8,12 +8,15 @@ describe 'Test crea metodos' do
     Trait.define(:T) {
       c_meth(:printHi) {puts 'Hola, mi nombre de metodo de clase es printHi'}
       i_meth(:printHi2) {puts 'Hola, mi nombre de metodo de instancia es printHi2'}
+      i_meth(:uno) {1}
+      i_meth(:dos) {2}
     }
 
 
     Trait.define(:T2) do
       c_meth(:printHi3) {puts 'Hola, mi nombre de metodo de clase es printHi3'}
       i_meth(:printHi4) {puts 'Hola, mi nombre de metodo de instancia es printHi4'}
+      i_meth(:dos) {2}
     end
 
 
@@ -32,8 +35,7 @@ describe 'Test crea metodos' do
     p.should respond_to(:printHi2)
     p.should_not respond_to(:printHi)
 
-    (Trait.trait_list_instance.has_key? :T_T2).should == true
-#   Trait.trait_list_instance.each{|key,value| puts 'Trait: '+key.to_s; value.each{|key,value| puts key.to_s}}
+    #(Trait.trait_list_instance.has_key? :T_T2).should == true
   end
 
   it 'agrega metodo y luego cambia a alias' do
@@ -81,5 +83,19 @@ describe 'Test crea metodos' do
 
   end
 
+  it 'usa dos traits que tienen un metedo repetido y tira excepcion' do
+    class Conflicto
+      uses :T+:T2
+    end
 
+    c = Conflicto.new
+
+    c.should respond_to?(:uno) == true
+    c.should_not respond_to?(:dos) == true
+    c.uno.should == 1
+    expect {
+      c.dos
+    }.to raise_error NoMethodError
+
+  end
 end
