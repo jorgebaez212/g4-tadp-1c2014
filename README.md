@@ -7,15 +7,16 @@ Implementación de composición de objetos similar a Traits consu álgebra inclu
 
 Todo Trait a definir se deberá declarar de la siguiente forma:
 
-Trait.define(:NombreTrait) {
 
-      c_meth(:NombreMetodoDeClase) {puts 'Esto sería parte del bloque de código del método de clase'}
-      
-	  i_meth(:NombreMetodoDeInstancia) {puts 'Esto sería parte del bloque de código del método de instancia'}
-      
-    }
+	Trait.define(:NombreTrait) {
+	
+		c_meth(:NombreMetodoDeClase) {puts 'Esto sería parte del bloque de código del método de clase'}
+		
+		i_meth(:NombreMetodoDeInstancia) {puts 'Esto sería parte del bloque de código del método de instancia'}
+		
+    	}
 
-## Uso de Traits
+## Uso de los Traits
 
 ##### Para utilizar los Traits, se deberá utilizar en la declaración de las clases la siguiente sintaxis:
 
