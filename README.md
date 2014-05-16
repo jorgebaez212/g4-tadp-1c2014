@@ -20,25 +20,25 @@ Todo Trait a definir se deberá declarar de la siguiente forma:
 
 ##### Para utilizar los Traits, se deberá utilizar en la declaración de las clases la siguiente sintaxis:
 
-class Prueba
-    uses :Trait_1
-end
+	class Prueba
+		uses :Trait_1
+	end
 
 ##### Si se quieren sumar Traits:
 
-class Prueba
-    uses :Trait_1 + :Trait_2
-end
+	class Prueba
+		uses :Trait_1 + :Trait_2
+	end
 
-##### Si no se desea utilizar algunos métodos de un trait:
+##### Si se desea no utilizar algunos métodos de un trait:
 
-class Prueba
-    uses (:Trait_1 - [:Metodo_1 ,:Metodo_1]) + :T2
-end
+	class Prueba
+		uses (:Trait_1 - [:Metodo_1 ,:Metodo_1]) + :T2
+	end
 
 O simplemente:
 
-class Prueba
-    uses :Trait_1 - [:Metodo_1 ,:Metodo_1] + :T2
-end
+	class Prueba
+		uses :Trait_1 - [:Metodo_1 ,:Metodo_1] + :T2
+	end
 
