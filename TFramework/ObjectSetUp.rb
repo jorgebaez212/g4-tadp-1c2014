@@ -12,11 +12,11 @@ class Object
   end
 
   def strategy(strategyType)
-    Trait.strategyType=strategyType
+    Trait.strategy_type=strategyType
   end
 
   def strategy_with_function(strategyType, &function)
-    Trait.strategyType=strategyType
+    Trait.strategy_type=strategyType
     Trait.function = Proc.new &function
   end
 

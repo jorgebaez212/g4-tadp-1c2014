@@ -38,71 +38,54 @@ class Symbol
     #Se sacan los que se quería excluir
     list.each { |metodoAQuitar|
       if(Trait.trait_list_instance[name].has_key? metodoAQuitar)
-        Trait.i_removeMethod name, metodoAQuitar
+        Trait.remove_instance_method name, metodoAQuitar
       else
-        Trait.c_removeMethod name, metodoAQuitar
+        Trait.remove_class_method name, metodoAQuitar
       end  }
 
     #Devuelvo el symbol del trait especial (sin los metodos indicados en la lista)
     name
   end
 
-  #Trait.define (tNew){ i_meth(key.to_s +'_' +tOld.to_s,&value)}
+  #Trait.define (trait_nuevo){ i_meth(key.to_s +'_' +trait_viejo1.to_s,&value)}
 
-  def copyToTrait(tNew, tOld, previousTrait)
-    Trait.define (tNew){}
+  def copyToTrait(trait_nuevo, trait_viejo1, trait_viejo2)
+    Trait.define (trait_nuevo){}
 
-    Trait.trait_list_instance[tOld].each do |key,value|
+    Trait.trait_list_instance[trait_viejo1].each do |nombre_metodo,codigo|
 
-      if(Trait.trait_list_instance[tNew].key?(key) )
-        #Trait.generate_new_method tOld, tNew, key, value
-        if Trait.strategyType == 1
-
-          Trait.i_removeMethod tNew, key
-
-          Trait.define (tNew){ i_meth((key.to_s+'_'+tOld.to_s).to_sym,&value)}
-          Trait.define (tNew){ i_meth((key.to_s+'_'+previousTrait.to_s).to_sym, &Trait.trait_list_instance[previousTrait][key])}
-
-          Trait.define (tNew){ i_meth(key) do
-            self.send (key.to_s+'_'+previousTrait.to_s).to_sym;
-            self.send (key.to_s+'_'+tOld.to_s).to_sym;
-          end
-          }
-        else
-          Trait.define (tNew){ i_meth(key, &Proc.new {
-            raise ConflicException.new(), 'Conflicto de metodos de instancia llamados: "%s" en traits: "%s" y "%s"' % [key,tOld,tNew]} )
-          }
-        end
+      if(Trait.trait_list_instance[trait_nuevo].key?(nombre_metodo) )
+        Trait.strategy_type.resolver_conflictos(trait_nuevo, trait_viejo1, trait_viejo2, nombre_metodo, &codigo)
       else
-        Trait.define (tNew){ i_meth(key,&value)}
+        Trait.define (trait_nuevo){ instance_method(nombre_metodo,&codigo)}
       end
     end
 
-    Trait.trait_list_class[tOld].each do |key,value|
-      if(Trait.trait_list_class[tNew].key?(key))
+    Trait.trait_list_class[trait_viejo1].each do |key,value|
+      if(Trait.trait_list_class[trait_nuevo].key?(key))
 
-        #Trait.generate_new_method tOld, tNew, key, value
-        if Trait.strategyType == 1
-          Trait.define (tNew){ c_meth((key.to_s+'_'+tOld.to_s).to_sym,&value)}
+        #Trait.generate_new_method trait_viejo1, trait_nuevo, key, value
+        if Trait.strategy_type == 1
+          Trait.define (trait_nuevo){ class_method((key.to_s+'_'+trait_viejo1.to_s).to_sym,&value)}
         else
-          Trait.define (tNew){
-            c_meth(key, &Proc.new {raise ConflicException.new(), 'Conflicto de metodos de clase llamados: "%s" en traits: "%s" y "%s"' % [key,tOld,tNew]})
+          Trait.define (trait_nuevo){
+            class_method(key, &Proc.new {raise ConflicException.new(), 'Conflicto de metodos de clase llamados: "%s" en traits: "%s" y "%s"' % [key,trait_viejo1,trait_nuevo]})
           }
         end
       else
-        Trait.define(tNew){c_meth(key,&value)}
+        Trait.define(trait_nuevo){class_method(key,&value)}
       end
     end
   end
 
   def c_aliasMethod(traitName, newMethodName)
-    value = Trait.c_removeMethod traitName, self.to_sym
-    Trait.define(traitName){c_meth(newMethodName,&value)}
+    value = Trait.remove_class_method traitName, self.to_sym
+    Trait.define(traitName){class_method(newMethodName,&value)}
   end
 
   def i_aliasMethod(traitName, newMethodName)
-    value = Trait.i_removeMethod traitName, self.to_sym
-    Trait.define(traitName){i_meth(newMethodName,&value)}
+    value = Trait.remove_instance_method traitName, self.to_sym
+    Trait.define(traitName){instance_method(newMethodName,&value)}
   end
 
   #Creo metodo de clase con nombre nuevo
@@ -141,6 +124,3 @@ class Symbol
   end
 
 end
-
-
-

@@ -1,16 +1,21 @@
+require_relative './Estrategias.rb'
+
 class Trait
   class << self
-    attr_accessor :trait_list_instance, :trait_list_class, :tmpTrait, :strategy, :strategyType
+    attr_accessor :trait_list_instance, :trait_list_class, :tmpTrait, :strategy, :strategy_type
   end
+
+
 
   Trait.trait_list_instance = Hash.new
   Trait.trait_list_class = Hash.new
+  Trait.strategy_type = EstrategiaPorDefault.new
 
-  def self.c_meth(methodName, &block)
+  def self.class_method(methodName, &block)
     trait_list_class[tmpTrait][methodName] = Proc.new(&block)
   end
 
-  def self.i_meth(methodName, &block)
+  def self.instance_method(methodName, &block)
     trait_list_instance[tmpTrait][methodName] = Proc.new(&block)
   end
 
@@ -29,7 +34,7 @@ class Trait
     self.instance_eval &block
   end
 
-  def self.c_removeMethod(traitName, methodName)
+  def self.remove_class_method(traitName, methodName)
     list = trait_list_class[traitName]
     #Eliminar de lista
     method = list[methodName]
@@ -37,22 +42,11 @@ class Trait
     method
   end
 
-  def self.i_removeMethod(traitName, methodName)
+  def self.remove_instance_method(traitName, methodName)
     list = trait_list_instance[traitName]
     #Eliminar de lista
     method = list[methodName]
     list.delete methodName
     method
   end
-
-#  def self.generate_new_method tOld, tNew, key, value
-#      if Trait.strategyType == 1
- #      Trait.define (tNew){ c_meth((key.to_s+'_'+tOld.to_s).to_sym,&value)}
-  #    else
-   #    Trait.define (tNew){
-    #    i_meth(key, &Proc.new {raise ConflicException.new(), 'Conflicto de metodos de clase llamados: "%s" en traits: "%s" y "%s"' % [key,tOld,tNew]})
-     # }
-
-      #end
-    #end
 end

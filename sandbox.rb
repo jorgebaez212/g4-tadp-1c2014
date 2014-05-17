@@ -6,39 +6,47 @@ describe 'Test crea metodos' do
   before :all do
 
     Trait.define(:T) {
-      c_meth(:printHi) {puts 'Hola, mi nombre de metodo de clase es printHi'}
-      i_meth(:printHi2) {puts 'Hola, mi nombre de metodo de instancia es printHi2'}
+      class_method(:printHi) {puts 'Hola, mi nombre de metodo de clase es printHi'}
+      instance_method(:printHi2) {puts 'Hola, mi nombre de metodo de instancia es printHi2'}
     }
 
 
     Trait.define(:T2) do
-      c_meth(:printHi3) {puts 'Hola, mi nombre de metodo de clase es printHi3'}
-      i_meth(:printHi4) {puts 'Hola, mi nombre de metodo de instancia es printHi4'}
+      class_method(:printHi3) {puts 'Hola, mi nombre de metodo de clase es printHi3'}
+      instance_method(:printHi4) {puts 'Hola, mi nombre de metodo de instancia es printHi4'}
     end
 
     Trait.define(:T3) {
-      i_meth(:metodoNoRepetido) {'Soy un metodo sin repetir'}
-      i_meth(:metodoRepetido) {'Soy el metodo repetido en T'}
+      instance_method(:metodoNoRepetido) {'Soy un metodo sin repetir'}
+      instance_method(:metodoRepetido) {'Soy el metodo repetido en T'}
     }
 
 
     Trait.define(:T4) do
-      i_meth(:metodoRepetido) {'Soy el metodo repetido en T2'}
+      instance_method(:metodoRepetido) {'Soy el metodo repetido en T2'}
     end
 
     Trait.define(:TraitConflictivo) do
-      i_meth(:metodoConflictivo) {'Soy un metodo conflictivo de trait'}
+      instance_method(:metodoConflictivo) {'Soy un metodo conflictivo de trait'}
     end
 
     Trait.define(:T5) do
-      i_meth(:un_metodo) {puts 'Soy el metodo repetido en T5'}
+      instance_method(:un_metodo) {5}
+      instance_method(:metodo_repetido_numero) {5}
     end
 
     Trait.define(:T6) do
-      i_meth(:un_metodo) {puts 'Soy el metodo repetido en T6'}
+      instance_method(:un_metodo) {6}
+      instance_method(:metodo_repetido_numero) {6}
     end
 
+    Trait.define(:T7) do
+      instance_method(:metodo_repetido_numero) {-7}
+    end
 
+    Trait.define(:T8) do
+      instance_method(:metodo_repetido_numero) {8}
+    end
 
   end
 
@@ -73,10 +81,10 @@ describe 'Test crea metodos' do
   it 'usa un trait sacandole algunos metodos' do
 
     Trait.define(:T) {
-      c_meth(:print_A) {puts 'Hola, mi nombre de metodo de clase es printHi1'}
-      i_meth(:print_B) {puts 'Hola, mi nombre de metodo de instancia es printHi2'}
-      c_meth(:print_C) {puts 'Hola, mi nombre de metodo de clase es printHi3'}
-      i_meth(:print_D) {puts 'Hola, mi nombre de metodo de instancia es printHi4'}
+      class_method(:print_A) {puts 'Hola, mi nombre de metodo de clase es printHi1'}
+      instance_method(:print_B) {puts 'Hola, mi nombre de metodo de instancia es printHi2'}
+      class_method(:print_C) {puts 'Hola, mi nombre de metodo de clase es printHi3'}
+      instance_method(:print_D) {puts 'Hola, mi nombre de metodo de instancia es printHi4'}
     }
 
     class PruebaResta
@@ -131,7 +139,7 @@ describe 'Test crea metodos' do
 
   it 'usa trait que tienen un metodo con mismo nombre y al ejecutarlo en la clase ejecuta los del trait' do
     class Conflicto3
-      strategy (1) # 1: ejecuto todos los metodos repetidos en orden
+      strategy EstrategiaLLamarATodos.new # 1: ejecuto todos los metodos repetidos en orden
       uses :T5 + :T6
     end
 
@@ -140,15 +148,33 @@ describe 'Test crea metodos' do
     c.should respond_to(:un_metodo_T5)
     c.should respond_to(:un_metodo_T6)
     c.should respond_to(:un_metodo)
+    c.un_metodo.should == 6
+  end
 
-    #puts (c.un_metodo_T5)
-    #puts (c.un_metodo_T6)
-    c.un_metodo
+  it 'usa trait que tienen un metodo con mismo nombre y al ejecutarlo en la clase ejecuta los del trait' do
+    class Conflicto4
+      strategy EstrategiaLLamarATodos.new # 1: ejecuto todos los metodos repetidos en orden
+      uses :T6 + :T5
+    end
 
+    c = Conflicto4.new
 
-    #c.un_metodo
+    c.should respond_to(:un_metodo_T5)
+    c.should respond_to(:un_metodo_T6)
+    c.should respond_to(:un_metodo)
+    c.un_metodo.should == 5
+  end
 
-#    c.metodoConflictivo.should eq 'Soy un metodo conflictivo de instancia'
+  it 'usa trait que tienen un metodo con mismo nombre y al ejecutarlo en la clase ejecuta los del trait' do
+    class Conflicto5
+      strategy EstrategiaLLamarATodosYaplicarFuncion.new(Proc.new {|numero| numero>0})  # 1: ejecuto todos los metodos repetidos en orden
+      uses :T7 + :T8 + :T5 + :T6
+    end
+
+    c = Conflicto5.new
+
+    c.should respond_to(:metodo_repetido_numero)
+    c.metodo_repetido_numero.should == 8
   end
 end
 
