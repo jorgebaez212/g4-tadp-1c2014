@@ -48,6 +48,14 @@ describe 'Test crea metodos' do
       instance_method(:metodo_repetido_numero) {8}
     end
 
+    Trait.define(:T9) do
+      instance_method(:metodo_repetido_calculo) {|parametro| parametro+9}
+    end
+
+    Trait.define(:T10) do
+      instance_method(:metodo_repetido_calculo) {|parametro| parametro+10}
+    end
+
   end
 
   it 'agrega metodo simple' do
@@ -167,7 +175,7 @@ describe 'Test crea metodos' do
 
   it 'usa trait que tienen un metodo con mismo nombre y al ejecutarlo en la clase ejecuta los del trait' do
     class Conflicto5
-      strategy EstrategiaLLamarATodosYaplicarFuncion.new(Proc.new {|numero| numero>0})  # 1: ejecuto todos los metodos repetidos en orden
+      strategy EstrategiaLLamarATodosYaplicarFuncion.new(Proc.new {|numero| numero>0})  # 3
       uses :T7 + :T8 + :T5 + :T6
     end
 
@@ -176,17 +184,21 @@ describe 'Test crea metodos' do
     c.should respond_to(:metodo_repetido_numero)
     c.metodo_repetido_numero.should == 8
   end
+
+
+  it 'usa trait que tienen un metodo con mismo nombre y al ejecutarlo en la clase ejecuta los del trait' do
+    class Conflicto6
+      strategy EstrategiaLLamarATodosFoldeando.new # 2
+      uses :T9+:T10
+    end
+
+    c = Conflicto6.new
+
+    c.should respond_to(:metodo_repetido_calculo)
+    c.metodo_repetido_calculo(0).should == 19
+    c.metodo_repetido_calculo(5).should == 24
+  end
 end
-
-
-
-
-
-
-
-
-
-
 
 
 

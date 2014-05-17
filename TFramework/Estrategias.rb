@@ -53,3 +53,23 @@ class EstrategiaLLamarATodosYaplicarFuncion
   end
 
 end
+
+
+class EstrategiaLLamarATodosFoldeando
+
+  def resolver_conflictos(trait_nuevo, trait_viejo1, trait_viejo2, nombre_metodo, &codigo_trait_viejo1)
+    Trait.remove_instance_method trait_nuevo, nombre_metodo
+
+    nombre_metodo_trait_viejo1 = (nombre_metodo.to_s+'_'+trait_viejo1.to_s).to_sym
+    nombre_metodo_trait_viejo2 = (nombre_metodo.to_s+'_'+trait_viejo2.to_s).to_sym
+    Trait.define (trait_nuevo){ instance_method(nombre_metodo_trait_viejo1, &codigo_trait_viejo1)}
+    Trait.define (trait_nuevo){ instance_method(nombre_metodo_trait_viejo2, &Trait.trait_list_instance[trait_viejo2][nombre_metodo])}
+
+    Trait.define (trait_nuevo){ instance_method(nombre_metodo) { |parametro_inicial|
+      resultado = self.send nombre_metodo_trait_viejo1, parametro_inicial
+      self.send nombre_metodo_trait_viejo2, resultado
+      }
+    }
+  end
+
+end
