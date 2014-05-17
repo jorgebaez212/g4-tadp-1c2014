@@ -9,7 +9,7 @@ class Symbol
 
   def +(other)
     #Verificacion de conflictos
-    checkConflicts(self,other)
+    #checkConflicts(self,other)
 
     name = (self.to_s+'_'+other.to_s).to_sym
 
@@ -47,23 +47,19 @@ class Symbol
   end
 
   def copyToTrait(tNew, tOld)
+    Trait.define (tNew){}
     Trait.trait_list_instance[tOld].each do |key,value|
-      Trait.define (tNew){i_meth(key,&value)}
-    end
-    Trait.trait_list_class[tOld].each do |key,value|
-      Trait.define(tNew){c_meth(key,&value)}
-    end
-  end
-
-  def checkConflicts(tNew, tOld)
-    Trait.trait_list_instance[tNew].each do |key,value|
-      if(Trait.trait_list_instance[tOld].key?(key))
-        raise ConflicException.new(), 'Conflicto de metodos de instancia llamados: "%s" en traits: "%s" y "%s"' % [key,tOld,tNew]
+      if(Trait.trait_list_instance[tNew].key?(key))
+        Trait.define (tNew){ i_meth(key, &Proc.new {raise ConflicException.new(), 'Conflicto de metodos de instancia llamados: "%s" en traits: "%s" y "%s"' % [key,tOld,tNew]} ) }
+      else
+        Trait.define (tNew){ i_meth(key,&value)}
       end
     end
-    Trait.trait_list_class[tNew].each do |key,value|
-      if(Trait.trait_list_class[tOld].key?(key))
-        raise ConflicException.new(), 'Conflicto de metodos de clase llamados: "%s" en traits: "%s" y "%s"' % [key,tOld,tNew]
+    Trait.trait_list_class[tOld].each do |key,value|
+      if(Trait.trait_list_class[tNew].key?(key))
+        Trait.define (tNew){c_meth(key, &Proc.new {raise ConflicException.new(), 'Conflicto de metodos de clase llamados: "%s" en traits: "%s" y "%s"' % [key,tOld,tNew]})}
+      else
+        Trait.define(tNew){c_meth(key,&value)}
       end
     end
   end

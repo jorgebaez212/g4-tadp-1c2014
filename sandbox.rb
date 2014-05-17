@@ -27,7 +27,7 @@ describe 'Test crea metodos' do
     end
 
     Trait.define(:TraitConflictivo) do
-      i_meth(:metodoConflictivo) {puts 'Soy un metodo conflictivo de trait'}
+      i_meth(:metodoConflictivo) {'Soy un metodo conflictivo de trait'}
     end
 
   end
@@ -94,23 +94,28 @@ describe 'Test crea metodos' do
 
   it 'usa dos traits que tienen un metedo repetido y tira excepcion' do
     class Conflicto
+      uses :T3+:T4
     end
-
-    expect{Conflicto.uses :T3+:T4}.should raise_exception ConflicException
 
     c = Conflicto.new
 
-    c.should_not respond_to(:metodoNoRepetido)
-    c.should_not respond_to(:metodoRepetido)
+    c.should respond_to(:metodoNoRepetido)
+    c.should respond_to(:metodoRepetido)
+    expect{c.metodoRepetido}.should raise_exception ConflicException
   end
 
-  it 'usa trait que ya tiene un metodo existente en clase' do
-    class Conflicto2
+  it 'usa trait que ya tiene un metodo existente en instancia de clase y se queda con el metodo de clase' do
+   class Conflicto2
+      uses :TraitConflictivo
       def metodoConflictivo
-        puts "Soy un metodo conflictivo de instancia"
+        'Soy un metodo conflictivo de instancia'
       end
-    end
+   end
 
-    expect{Conflicto2.uses :TraitConflictivo}.should raise_exception ConflicException
+   c = Conflicto2.new
+
+   c.should respond_to(:metodoConflictivo)
+
+   c.metodoConflictivo.should eq 'Soy un metodo conflictivo de instancia'
   end
 end
