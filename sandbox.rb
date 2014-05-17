@@ -8,18 +8,23 @@ describe 'Test crea metodos' do
     Trait.define(:T) {
       c_meth(:printHi) {puts 'Hola, mi nombre de metodo de clase es printHi'}
       i_meth(:printHi2) {puts 'Hola, mi nombre de metodo de instancia es printHi2'}
-      i_meth(:uno) {1}
-      i_meth(:dos) {2}
     }
 
 
     Trait.define(:T2) do
       c_meth(:printHi3) {puts 'Hola, mi nombre de metodo de clase es printHi3'}
       i_meth(:printHi4) {puts 'Hola, mi nombre de metodo de instancia es printHi4'}
-      i_meth(:dos) {2}
     end
 
+    Trait.define(:T3) {
+      i_meth(:metodoNoRepetido) {'Soy un metodo sin repetir'}
+      i_meth(:metodoRepetido) {'Soy el metodo repetido en T'}
+    }
 
+
+    Trait.define(:T4) do
+      i_meth(:metodoRepetido) {'Soy el metodo repetido en T2'}
+    end
 
   end
 
@@ -79,23 +84,19 @@ describe 'Test crea metodos' do
     p.should_not respond_to(:printHi3)
     p.should respond_to(:printHi4)
 
-    Trait.trait_list_instance.each{|key,value| puts 'Trait: '+key.to_s; value.each{|key,value| puts key.to_s}}
+    #Trait.trait_list_instance.each{|key,value| puts 'Trait: '+key.to_s; value.each{|key,value| puts key.to_s}}
 
   end
 
   it 'usa dos traits que tienen un metedo repetido y tira excepcion' do
     class Conflicto
-      uses :T+:T2
     end
+
+    expect{Conflicto.uses :T3+:T4}.should raise_exception ConflicException
 
     c = Conflicto.new
 
-    c.should respond_to?(:uno) == true
-    c.should_not respond_to?(:dos) == true
-    c.uno.should == 1
-    expect {
-      c.dos
-    }.to raise_error NoMethodError
-
+    c.should_not respond_to(:metodoNoRepetido)
+    c.should_not respond_to(:metodoRepetido)
   end
 end

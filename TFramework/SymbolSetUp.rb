@@ -1,22 +1,30 @@
 require_relative './Trait.rb'
 
+
+class ConflicException < Exception; end
+
 class Symbol
 
 
 
   def +(other)
+    #Verificacion de conflictos
+    Trait.trait_list_instance[other].each do |key,value|
+      if(Trait.trait_list_instance[self].key?(key))
+        raise ConflicException.new(), 'Conflicto de metodos de instancia llamados: "%s" en traits: "%s" y "%s"' % [key,self,other]
+      end
+    end
+    Trait.trait_list_class[other].each do |key,value|
+      if(Trait.trait_list_class[self].key?(key))
+        raise ConflicException.new(), 'Conflicto de metodos de clase llamados: "%s" en traits: "%s" y "%s"' % [key,self,other]
+      end
+    end
 
     name = (self.to_s+'_'+other.to_s).to_sym
 
     copyToTrait name, self
-    metodos_compartidos = Array.new
-
-    Trait.trait_list_instance[other].each { |key,value|
-        metodos_compartidos.push key if Trait.trait_list_instance[name].has_key? key
-       }
-
     copyToTrait name, other
-    metodos_compartidos.each { |metodo| Trait.i_removeMethod name, metodo}
+
     name
 
   end
