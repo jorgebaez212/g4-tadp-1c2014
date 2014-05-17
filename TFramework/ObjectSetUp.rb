@@ -1,11 +1,23 @@
 require_relative './Trait.rb'
 class Object
+
+  attr_accessor :strategyType, :function
+
   def create_method(name, &block)
     self.send(:define_method, name, &block)
   end
 
   def create_singleton_method(name, &block)
     self.send(:define_singleton_method, name, &block)
+  end
+
+  def strategy(strategyType)
+    Trait.strategyType=strategyType
+  end
+
+  def strategy_with_function(strategyType, &function)
+    Trait.strategyType=strategyType
+    Trait.function = Proc.new &function
   end
 
   def uses (*traits)
@@ -20,4 +32,6 @@ class Object
       end
     }
   end
+
+
 end

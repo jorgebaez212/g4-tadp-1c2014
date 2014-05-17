@@ -1,6 +1,6 @@
 class Trait
   class << self
-    attr_accessor :trait_list_instance, :trait_list_class, :tmpTrait
+    attr_accessor :trait_list_instance, :trait_list_class, :tmpTrait, :strategy, :strategyType
   end
 
   Trait.trait_list_instance = Hash.new
@@ -44,4 +44,15 @@ class Trait
     list.delete methodName
     method
   end
+
+#  def self.generate_new_method tOld, tNew, key, value
+#      if Trait.strategyType == 1
+ #      Trait.define (tNew){ c_meth((key.to_s+'_'+tOld.to_s).to_sym,&value)}
+  #    else
+   #    Trait.define (tNew){
+    #    i_meth(key, &Proc.new {raise ConflicException.new(), 'Conflicto de metodos de clase llamados: "%s" en traits: "%s" y "%s"' % [key,tOld,tNew]})
+     # }
+
+      #end
+    #end
 end
