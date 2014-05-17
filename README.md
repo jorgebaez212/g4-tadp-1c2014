@@ -33,12 +33,31 @@ Todo Trait a definir se deberá declarar de la siguiente forma:
 ##### Si se desea no utilizar algunos métodos de un trait:
 
 	class Prueba
-		uses (:Trait_1 - [:Metodo_1 ,:Metodo_1]) + :T2
+		uses (:Trait_1 - [:Metodo_1 ,:Metodo_2]) + :T2
 	end
 
 O simplemente:
 
 	class Prueba
-		uses :Trait_1 - [:Metodo_1 ,:Metodo_1] + :T2
+		uses :Trait_1 - [:Metodo_1 ,:Metodo_2] + :T2
 	end
+
+##### Por default existe una estrategia para resulucion de conflictos que lanza una excepcion al llamar al metodo conflictivo, en caso de quuerer asignar otra usar la siguiente sintaxis:
+	
+	class Prueba
+		strategy EstrategiaLLamarATodos.new 
+		uses :T1 + :T2
+	end
+
+	class Prueba
+		strategy EstrategiaLLamarATodosFoldeando.new 
+		uses :T1 + :T2
+	end
+
+	class Prueba
+		strategy EstrategiaLLamarATodosYaplicarFuncion.new(Proc.new {|numero| numero>0})
+		uses :T1 + :T2
+	end
+
+
 
