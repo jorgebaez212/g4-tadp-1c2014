@@ -7,14 +7,16 @@ class Symbol
 
   def +(other)
     #Verificacion de conflictos
-    metodos_con_conflictos = checkConflicts(self,other)
 
     name = (self.to_s+'_'+other.to_s).to_sym
 
-    copyToTrait name, self, metodos_con_conflictos
-    copyToTrait name, other, metodos_con_conflictos
+    copyToTrait name, self, ""
+    copyToTrait name, other, self
 
-    agregar_llamada_a_todos self, other, name, metodos_con_conflictos
+
+
+
+    #agregar_llamada_a_todos self, other, name, metodos_con_conflictos
     name
 
   end
@@ -47,15 +49,25 @@ class Symbol
 
   #Trait.define (tNew){ i_meth(key.to_s +'_' +tOld.to_s,&value)}
 
-  def copyToTrait(tNew, tOld, metodos_con_conflictos)
+  def copyToTrait(tNew, tOld, previousTrait)
     Trait.define (tNew){}
 
     Trait.trait_list_instance[tOld].each do |key,value|
 
-      if(Trait.trait_list_instance[tNew].key?(key) || metodos_con_conflictos.include?(key) )
+      if(Trait.trait_list_instance[tNew].key?(key) )
         #Trait.generate_new_method tOld, tNew, key, value
         if Trait.strategyType == 1
+
+          Trait.i_removeMethod tNew, key
+
           Trait.define (tNew){ i_meth((key.to_s+'_'+tOld.to_s).to_sym,&value)}
+          Trait.define (tNew){ i_meth((key.to_s+'_'+previousTrait.to_s).to_sym, &Trait.trait_list_instance[previousTrait][key])}
+
+          Trait.define (tNew){ i_meth(key) do
+            self.send (key.to_s+'_'+previousTrait.to_s).to_sym;
+            self.send (key.to_s+'_'+tOld.to_s).to_sym;
+          end
+          }
         else
           Trait.define (tNew){ i_meth(key, &Proc.new {
             raise ConflicException.new(), 'Conflicto de metodos de instancia llamados: "%s" en traits: "%s" y "%s"' % [key,tOld,tNew]} )
@@ -67,7 +79,7 @@ class Symbol
     end
 
     Trait.trait_list_class[tOld].each do |key,value|
-      if(Trait.trait_list_class[tNew].key?(key) || metodos_con_conflictos.include?(key))
+      if(Trait.trait_list_class[tNew].key?(key))
 
         #Trait.generate_new_method tOld, tNew, key, value
         if Trait.strategyType == 1
@@ -126,13 +138,6 @@ class Symbol
       }
     }
     metodos_con_conflictos
-  end
-
-  def agregar_llamada_a_todos nuevo_trait, one_trait, other_trait, metodos_con_conflictos
-
-    metodos_con_conflictos.each { |nombre_metodo|
-      
-    }
   end
 
 end

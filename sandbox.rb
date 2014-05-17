@@ -31,11 +31,11 @@ describe 'Test crea metodos' do
     end
 
     Trait.define(:T5) do
-      i_meth(:un_metodo) {'Soy el metodo repetido en T5'}
+      i_meth(:un_metodo) {puts 'Soy el metodo repetido en T5'}
     end
 
     Trait.define(:T6) do
-      i_meth(:un_metodo) {'Soy el metodo repetido en T6'}
+      i_meth(:un_metodo) {puts 'Soy el metodo repetido en T6'}
     end
 
 
@@ -137,13 +137,13 @@ describe 'Test crea metodos' do
 
     c = Conflicto3.new
 
-    c.should respond_to(:un_metodo_T5) == true
-    c.should respond_to(:un_metodo_T6) == true
-    c.should respond_to(:un_metodo) == true
+    c.should respond_to(:un_metodo_T5)
+    c.should respond_to(:un_metodo_T6)
+    c.should respond_to(:un_metodo)
 
-    puts (c.un_metodo_T5)
-    puts (c.un_metodo_T6)
-    #puts (c.un_metodo)
+    #puts (c.un_metodo_T5)
+    #puts (c.un_metodo_T6)
+    c.un_metodo
 
 
     #c.un_metodo
