@@ -101,7 +101,7 @@ describe 'Test crea metodos' do
 
     c.should respond_to(:metodoNoRepetido)
     c.should respond_to(:metodoRepetido)
-    expect{c.metodoRepetido}.should raise_exception ConflicException
+    expect{c.metodoRepetido}.should raise_error ConflicException
   end
 
   it 'usa trait que ya tiene un metodo existente en instancia de clase y se queda con el metodo de clase' do

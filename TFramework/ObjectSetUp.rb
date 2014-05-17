@@ -20,18 +20,4 @@ class Object
       end
     }
   end
-
-#  def checkConflicts(currentClass, trait)
-#    currentClass.instance_methods.each do |key|
-#      if(Trait.trait_list_instance[trait].key?(key))
-#        raise ConflicException.new(), 'Conflicto de metodos de instancia llamados: "%s" en traits: "%s" y "%s"' % [key,trait,currentClass]
-#      end
-#    end
-#    currentClass.class.public_methods.each do |key|
-#      if(Trait.trait_list_class[trait].key?(key))
-#        raise ConflicException.new(), 'Conflicto de metodos de clase llamados: "%s" en Trait: "%s" y Clase: "%s"' % [key,trait,currentClass]
-#      end
-#    end
-#  end
-
 end
