@@ -9,16 +9,7 @@ class Symbol
 
   def +(other)
     #Verificacion de conflictos
-    Trait.trait_list_instance[other].each do |key,value|
-      if(Trait.trait_list_instance[self].key?(key))
-        raise ConflicException.new(), 'Conflicto de metodos de instancia llamados: "%s" en traits: "%s" y "%s"' % [key,self,other]
-      end
-    end
-    Trait.trait_list_class[other].each do |key,value|
-      if(Trait.trait_list_class[self].key?(key))
-        raise ConflicException.new(), 'Conflicto de metodos de clase llamados: "%s" en traits: "%s" y "%s"' % [key,self,other]
-      end
-    end
+    checkConflicts(self,other)
 
     name = (self.to_s+'_'+other.to_s).to_sym
 
@@ -61,6 +52,19 @@ class Symbol
     end
     Trait.trait_list_class[tOld].each do |key,value|
       Trait.define(tNew){c_meth(key,&value)}
+    end
+  end
+
+  def checkConflicts(tNew, tOld)
+    Trait.trait_list_instance[tNew].each do |key,value|
+      if(Trait.trait_list_instance[tOld].key?(key))
+        raise ConflicException.new(), 'Conflicto de metodos de instancia llamados: "%s" en traits: "%s" y "%s"' % [key,tOld,tNew]
+      end
+    end
+    Trait.trait_list_class[tNew].each do |key,value|
+      if(Trait.trait_list_class[tOld].key?(key))
+        raise ConflicException.new(), 'Conflicto de metodos de clase llamados: "%s" en traits: "%s" y "%s"' % [key,tOld,tNew]
+      end
     end
   end
 
