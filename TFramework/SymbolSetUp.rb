@@ -5,20 +5,11 @@ class ConflicException < Exception; end
 
 class Symbol
 
-  def +(other)
-    #Verificacion de conflictos
-
-    name = (self.to_s+'_'+other.to_s).to_sym
-
+  def +(trait_name)
+    name = (self.to_s+'_'+trait_name.to_s).to_sym
     copyToTrait name, self, ""
-    copyToTrait name, other, self
-
-
-
-
-    #agregar_llamada_a_todos self, other, name, metodos_con_conflictos
+    copyToTrait name, trait_name, self
     name
-
   end
 
   def - (list)
@@ -46,8 +37,6 @@ class Symbol
     #Devuelvo el symbol del trait especial (sin los metodos indicados en la lista)
     name
   end
-
-  #Trait.define (trait_nuevo){ i_meth(key.to_s +'_' +trait_viejo1.to_s,&value)}
 
   def copyToTrait(trait_nuevo, trait_viejo1, trait_viejo2)
     Trait.define (trait_nuevo){}
@@ -78,32 +67,32 @@ class Symbol
     end
   end
 
-  def c_aliasMethod(traitName, newMethodName)
-    value = Trait.remove_class_method traitName, self.to_sym
-    Trait.define(traitName){class_method(newMethodName,&value)}
+  def class_alias_method(trait_name, method_name)
+    value = Trait.remove_class_method trait_name, self.to_sym
+    Trait.define(trait_name){class_method(method_name,&value)}
   end
 
-  def i_aliasMethod(traitName, newMethodName)
-    value = Trait.remove_instance_method traitName, self.to_sym
-    Trait.define(traitName){instance_method(newMethodName,&value)}
+  def instance_alias_method(trait_name, method_name)
+    value = Trait.remove_instance_method trait_name, self.to_sym
+    Trait.define(trait_name){instance_method(method_name,&value)}
   end
 
   #Creo metodo de clase con nombre nuevo
-  def >(newMethodName)
-    Proc.new do |traitName|
-      name = (self.to_s+'_c_'+newMethodName.to_s).to_sym
-      copyToTrait name, traitName, []
-      c_aliasMethod name, newMethodName
+  def >(method_name)
+    Proc.new do |trait_name|
+      name = (self.to_s+'_c_'+method_name.to_s).to_sym
+      copyToTrait name, trait_name, []
+      class_alias_method name, method_name
     end
   end
 
   #Creo metodo de instancia con nombre nuevo
-  def <(newMethodName)
+  def <(method_name)
 
-    Proc.new do |traitName|
-      name = (traitName.to_s+'_i_'+newMethodName.to_s).to_sym
-      copyToTrait name, traitName, []
-      i_aliasMethod name, newMethodName
+    Proc.new do |trait_name|
+      name = (trait_name.to_s+'_i_'+method_name.to_s).to_sym
+      copyToTrait name, trait_name, []
+      instance_alias_method name, method_name
       name
     end
   end
@@ -111,16 +100,4 @@ class Symbol
   def << (method)
     method.call self.to_sym
   end
-
-  def checkConflicts(unTrait,other)
-
-    metodos_con_conflictos = Array.new
-    Trait.trait_list_instance[unTrait].each {|key, value|
-      Trait.trait_list_instance[unTrait].each {|key2,value2|
-          metodos_con_conflictos.push key if key == key2
-      }
-    }
-    metodos_con_conflictos
-  end
-
 end
